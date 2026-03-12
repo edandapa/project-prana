@@ -1,0 +1,9 @@
+# Python environment
+.venv/
+__pycache__/
+
+# Local Database
+**/chroma_db/
+
+# Secrets
+.env
