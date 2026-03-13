@@ -1,0 +1,1 @@
+Automated career page scanner using Gemini to filter for Customer Success roles
