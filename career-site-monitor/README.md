@@ -1,8 +1,8 @@
 Career Site Monitor (Gemini-Powered)
-This module is an automated intelligence agent built with Google Apps Script. It proactively monitors the career pages of top-tier tech companies, using Gemini 1.5 Flash to verify if new openings align with specific role criteria (Customer Success) and geographical constraints (US/Remote only).
+This module is an automated intelligence agent built with Google Apps Script. It proactively monitors the career pages of top-tier tech companies, using recent Gemini model to verify if new openings align with specific role criteria (Customer Success) and geographical constraints (US/Remote only).
 
 🚀 Key Features
-Automated Scanning: Periodically fetches job data from high-growth companies like LaunchDarkly, Cribl, Cloudinary, and Apollo GraphQL.
+Automated Scanning: Periodically fetches job data from high-growth companies like Cribl, Honeycomb, Dagster and Qualytics.
 
 AI-Powered Verification: Instead of basic keyword searches, it uses Gemini to analyze job titles and descriptions to filter out non-US roles (e.g., London/UK) and irrelevant positions.
 
@@ -13,7 +13,7 @@ Flexible Parsing: Handles both JSON-based API career pages and standard HTML fal
 🛠️ Technical Stack
 Language: JavaScript (Google Apps Script)
 
-LLM: Gemini 1.5 Flash (via Google AI Studio API)
+LLM: gemini-3-flash-preview (via Google AI Studio API)
 
 Infrastructure: Google Apps Script Triggers (Cron-style scheduling)
 
