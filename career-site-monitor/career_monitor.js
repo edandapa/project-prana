@@ -6,7 +6,7 @@
 const API_KEY_AG = "YOUR_GEMINI_API_KEY";
 const EMAIL_AG = "YOUR_EMAIL_ADDRESS";
 const SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";
-const MODEL_AG = "AVAILABLE GEMINI MODEL"; 
+const MODEL_AG = "models/AVAILABLE GEMINI MODEL"; 
 
 const SITES = [
   { name: "Cribl", url: "https://boards-api.greenhouse.io/v1/boards/cribl/jobs" },
