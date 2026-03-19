@@ -1,0 +1,17 @@
+# MCP Server Framework
+mcp-server-fastmcp
+
+# CRM Integration
+requests
+python-dotenv
+
+# RAG & Vector Database
+langchain-chroma
+langchain-huggingface
+sentence-transformers
+
+# UI & Dashboard
+rich
+
+# Utility
+asyncio
