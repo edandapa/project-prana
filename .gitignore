@@ -1,0 +1,16 @@
+# 🤫 Secrets
+.env
+*.env
+
+# 🐍 Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 🗄️ Local Data (Keep your RAG private)
+chroma_db/
+*.log
+
+# 🖥️ IDE
+.vscode/
