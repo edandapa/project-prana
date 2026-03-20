@@ -64,9 +64,14 @@ async def query_knowledge_base(question: str):
     from langchain_chroma import Chroma
     from langchain_huggingface import HuggingFaceEmbeddings
     
+    # 💡 FIX: Resolve the absolute path to the chroma_db folder
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(current_dir, "chroma_db")
+    
     hf_embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    # Make sure this path is correct for your local setup
-    vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=hf_embeddings)
+    
+    # Use the absolute db_path here
+    vectorstore = Chroma(persist_directory=db_path, embedding_function=hf_embeddings)
     
     docs = vectorstore.similarity_search(question, k=3)
     return "\n---\n".join([d.page_content for d in docs])
