@@ -65,4 +65,7 @@ Bash
 clasp push
 Run setupSheet() once in the editor to initialize the CRM headers and "Status" dropdowns.
 
-![alt text](image.png)
+Snapshot
+## 📊 System in Action
+![Job Pulse Agent CRM](images/screenshot.jpg)
+*Automated tracking with Gemini-generated fit analysis and pipeline status management.*
