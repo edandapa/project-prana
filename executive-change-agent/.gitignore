@@ -1,0 +1,12 @@
+# MCP Secrets
+claude_desktop_config.json
+*.env
+
+# Local RAG Databases
+**/lancedb/
+**/models/
+**/db/
+
+# OS files
+.DS_Store
+Thumbs.db

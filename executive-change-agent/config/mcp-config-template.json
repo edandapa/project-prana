@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "hubspot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@hubspot/mcp-server"
+      ],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "xxx-xxx-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      }
+    },
+    "apify": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@apify/actors-mcp-server"
+      ],
+      "env": {
+        "APIFY_TOKEN": "apify_api_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      }
+    },
+    "rag-server": {
+      "command": "cmd.exe",
+      "args": [
+        "/C",
+        "cd /D C:\\dev\\project-prana\\executive-change-agent && npx -y mcp-local-rag"
+      ],
+      "env": {
+        "BASE_DIR": "C:\\dev\\project-prana\\executive-change-agent\\data"
+      }
+    }
+  },
+  "preferences": {
+    "coworkWebSearchEnabled": true,
+    "coworkScheduledTasksEnabled": false,
+    "ccdScheduledTasksEnabled": false
+  }
+}

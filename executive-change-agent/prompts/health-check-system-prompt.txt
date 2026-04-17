@@ -1,0 +1,9 @@
+Run the Project Prana Health Check for xxxx@xxxx.com:
+
+Data Retrieval: Use the local hubspot mcp tool to fetch the contact xxxx@xxxx.com. I need their jobtitle, linkedin_headline, and linkedin_profile_url.
+Live Verification: Use the Apify tool to scrape the actual current headline from that LinkedIn URL.
+The Audit: Compare the scraped headline against the linkedin_headline stored in HubSpot.
+Strategic Action: If they do not match (meaning the executive has moved on):
+Update the HubSpot contact: Set Executive Status to 'Left Company' and update LinkedIn Headline with the new scraped value.
+Query the local rag-server for the 'Phase 1: Immediate Triage' steps and 'Template A: Departure Outreach' from the playbook.
+Output: Give me a summary of the change detected and the exact email draft I should send based on the playbook.
