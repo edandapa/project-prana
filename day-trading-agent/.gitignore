@@ -1,0 +1,11 @@
+# Python virtual environment
+src-mcp/venv/
+__pycache__/
+*.pyc
+
+# Google Apps Script Clasp config
+src-gas/.clasp.json
+
+# System files
+.DS_Store
+Thumbs.db
