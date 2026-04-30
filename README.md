@@ -16,6 +16,10 @@ Welcome to **Project Prana**, a central hub for autonomous AI agents. This proje
 * **[Flight Assistant](./flight-assistant)**: A travel agent utilizing the Amadeus API and ChromaDB to manage bookings based on personal preferences.
 * **[AI News Agent](./ai-news-agent)**: Scrapes and synthesizes the latest developments in Agentic AI and LLM research.
 
+### 📈 Fintech & Risk Management
+
+MNQ Trading Assistant: A decision support system for Micro Nasdaq futures using the ICC (Indication, Correction, Continuation) framework. It monitors market structure shifts and identifies high-probability entries while enforcing LUCID $25K evaluation rules, including the 40% Consistency Cap.
+
 ---
 
 ## 🛠️ Shared Tech Stack
