@@ -12,28 +12,21 @@ const SETTINGS = {
 function runDailyJobSearch() {
   const props = PropertiesService.getScriptProperties();
   const sheetId = props.getProperty('SHEET_ID');
-  if (!sheetId) throw new Error("SHEET_ID is missing from Script Properties. Please add it to Project Settings.");
+  if (!sheetId) throw new Error("SHEET_ID is missing from Script Properties.");
 
   const titles = ['"AI Solutions Manager"', '"AI Adoption Manager"', '"Customer Success Manager"', '"Strategic Success"'];
   
-  // Simplified site list to avoid query complexity errors
+  // RESILIENT ARRAY: Looping through these prevents the "Zero Hits" bug
   const siteQueries = [
-    'site:greenhouse.io',
-    'site:lever.co',
-    'site:ashbyhq.com',
+    'site:boards.greenhouse.io',
+    'site:jobs.lever.co',
+    'site:jobs.ashbyhq.com',
     'site:ycombinator.com/jobs',
     'site:myworkdayjobs.com'
   ];
   
   let rawResults = [];
   const memory = PropertiesService.getUserProperties();
-
-  // HELLO WORLD CHECK: Verify API is returning data
-  const testSearch = callSerper("Customer Success");
-  if (!testSearch || !testSearch.organic || testSearch.organic.length === 0) {
-    Logger.log("CRITICAL: Serper API returned zero results for a broad search. Check API Key or Credits.");
-    return;
-  }
 
   titles.forEach(title => {
     siteQueries.forEach(site => {
@@ -42,6 +35,7 @@ function runDailyJobSearch() {
       
       if (searchData && searchData.organic) {
         Logger.log(`- Found ${searchData.organic.length} results for ${title} on ${site}`);
+        // Memory Check: Only keep URLs we haven't processed in 30 days
         const freshOnly = searchData.organic.filter(job => !memory.getProperty(job.link));
         rawResults = rawResults.concat(freshOnly);
       }
@@ -50,24 +44,17 @@ function runDailyJobSearch() {
 
   if (rawResults.length > 0) {
     const uniqueJobs = deduplicate(rawResults);
-    Logger.log(`Total fresh roles to filter: ${uniqueJobs.length}`);
-    
     const curatedJobs = filterWithGemini(uniqueJobs);
     
     if (curatedJobs && curatedJobs.length > 0) {
       updateSheet(sheetId, curatedJobs);
       sendEmail(curatedJobs);
+      // Save URLs to memory
       curatedJobs.forEach(job => memory.setProperty(job.url, Date.now().toString()));
-      Logger.log(`Successfully surfaced ${curatedJobs.length} roles.`);
-    } else {
-      Logger.log("Gemini filtered out all results based on location/experience criteria.");
     }
-  } else {
-    Logger.log("Zero new URLs found by Serper after memory check.");
   }
   cleanupOldKeys();
 }
-
 /**
  * Searches Serper with the 'qdr:w' (past week) filter for better initial volume.
  */
@@ -89,17 +76,17 @@ function callSerper(query) {
  */
 function filterWithGemini(jobs) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
-  const prompt = `Act as a career agent for a US Citizen with 6+ years of experience in high-growth SaaS Customer Success.
   
-  Candidate Background:
-  - Metrics: Managed $3-6M in ARR; achieved 95% GRR and 120%+ NRR[cite: 6, 8, 25].
-  - Companies: Grafana Labs, Delphix, and Qubole[cite: 7].
-  - Skills: Data infrastructure, observability, Agentic AI, and RAG[cite: 9, 23, 62].
+  const prompt = `Act as a career agent for a US Citizen with 6+ years of SaaS Customer Success experience.
+  
+  CRITICAL INSTRUCTION: LOCATION VALIDATION
+  - The candidate is ONLY looking for roles in the USA (Remote, Los Angeles, or San Francisco).
+  - EXCLUDE roles that are primarily located in Japan, India, EMEA, or Canada, even if the company is headquartered in SF.
+  - If a description mentions "First Japan-based hire" or "Based in Tokyo," it is a 100% DISQUALIFIER.
 
-  Filter Requirements:
-  1. LOCATION: Remote (US-Based), Los Angeles, or San Francisco/Bay Area.
-  2. ROLE: AI Solutions/Adoption Manager or CSM (Mid to Senior).
-  3. EXCLUDE: Strictly exclude roles requiring residency outside the US (e.g., India).
+  Candidate Background:
+  - Metrics: Managed $3-6M in ARR; 95% GRR and 120%+ NRR.
+  - Focus: Observability, Data Infra, and AI Agents.
 
   Review these jobs: ${JSON.stringify(jobs)}.
   Return ONLY a JSON array: [{"company": "", "title": "", "location": "", "url": "", "fit_reason": ""}]`;
@@ -112,8 +99,7 @@ function filterWithGemini(jobs) {
     muteHttpExceptions: true
   });
 
-  const responseText = response.getContentText();
-  const textBlob = JSON.parse(responseText).candidates[0].content.parts[0].text;
+  const textBlob = JSON.parse(response.getContentText()).candidates[0].content.parts[0].text;
   const cleanJson = textBlob.replace(/```json|```/g, '').trim();
   return JSON.parse(cleanJson);
 }
